@@ -5,12 +5,13 @@ the paid steps (Regrid, roof check) only on sites that still look commercial, bi
 and both are capped per run and cached so a site is never paid for twice.
 """
 import logging
+import re
 import math
 from concurrent.futures import ThreadPoolExecutor
 
 from . import buildings, imagery, osm, parcels, places, vision
 from .config import settings
-from .geo import cluster_points
+from .geo import cluster_points, haversine_m
 from .score import categorize, est_panels, tier
 from .store import Store
 
@@ -102,6 +103,7 @@ def attach_buildings(sites: list[dict], place_indexes: dict) -> None:
                      bldg_name=b.get("name", ""), roof_m2=b.get("area_m2", 0))
             pidx = place_indexes.get(_cell(s["lat"], s["lon"], settings.tile_degrees))
             tenants = buildings.businesses_inside(b, pidx) if pidx else []
+            tenants.sort(key=lambda p: haversine_m(p["lat"], p["lon"], s["lat"], s["lon"]))  # nearest the panels first
             s["tenants"] = len(tenants)
             s["tenant_names"] = ", ".join(dict.fromkeys(p["name"] for p in tenants))[:200]
             anchor, how = pick_anchor(b, tenants, pidx)
@@ -179,17 +181,56 @@ def pick_anchor(b: dict, tenants: list[dict], pidx) -> tuple[dict | None, str]:
             best = _best_name_match(buildings.businesses_near(b, pidx, settings.outside_match_m * 2), bname)
             if best:
                 return best, "business next to building (matches building name)"
-    if bname:  # the map names the building but no listing matches: show the name, leave the phone blank
+    if bname:
+        # A named building on a campus ("Student Center", "Learning Resources"): the customer is the campus.
+        inst = _institution_near(b, pidx, bname) if pidx else None
+        if inst:
+            return dict(inst, name=f"{inst['name']} – {bname}"), "campus building (institution listing nearby)"
+        # the map names the building but no listing matches: show the name, leave the phone blank
         return {"name": bname, "category": b.get("class") or b.get("subtype") or "", "phone": "", "website": "",
                 "address": "", "city": "", "zip": ""}, "building name only (no phone listing)"
     real = [p for p in tenants if not _is_minor(p)]
-    real.sort(key=lambda p: (-(p.get("confidence") or 0), not p.get("phone")))
+    real.sort(key=lambda p: (_is_weak(p), -(p.get("confidence") or 0), not p.get("phone"),
+                             haversine_m(p["lat"], p["lon"], b["lat"], b["lon"])))
     if real:
         return real[0], "business inside building"
-    p = buildings.business_next_to(b, pidx, settings.outside_match_m) if pidx else None
-    if p and not _is_minor(p):
-        return p, "business next to building"
+    if pidx:
+        p = buildings.business_next_to(b, pidx, settings.outside_match_m)
+        if p and not _is_minor(p):
+            return p, "business next to building"
+        # last try: a listing pin dropped a bit further out (front of the lot); flagged as lower confidence
+        near = [q for q in buildings.businesses_near(b, pidx, settings.outside_match_m * 2) if not _is_minor(q)]
+        near.sort(key=_is_weak)
+        if near:
+            return near[0], "business near building (check name)"
     return None, "no business found"
+
+
+# Inside a building these are rarely who you call: an individual practitioner's own listing, or an
+# association/club registered at the address. Used only to rank tenants, never to drop them.
+_WEAK_RE = re.compile(r"^(dr\.?|doctor)\s|,?\s(do|md|dds|dmd|od|pa-c|lcsw|lpc|np|aprn)\.?$|association|society|club\b",
+                      re.I)
+
+
+def _is_weak(p: dict) -> bool:
+    return bool(_WEAK_RE.search(p.get("name", "") or "")) or "association" in (p.get("category") or "")
+
+
+_INSTITUTION_CATS = ("college", "university", "school", "hospital", "medical_center", "campus", "police",
+                     "fire_station", "government", "city_hall", "military", "airport", "seminary")
+
+
+def _institution_near(b: dict, pidx, bname: str, max_m: float = 400) -> dict | None:
+    """Nearest school/college/hospital/government listing to a named campus building."""
+    bw = _name_words(bname)
+    for p in buildings.businesses_near(b, pidx, max_m):
+        cat = (p.get("category") or "").lower()
+        if not any(c in cat for c in _INSTITUTION_CATS):
+            continue
+        if bw and bw <= _name_words(p["name"]):  # the building is already named after it
+            return None
+        return p
+    return None
 
 
 def looks_commercial(s: dict) -> bool:

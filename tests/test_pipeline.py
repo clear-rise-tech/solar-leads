@@ -591,3 +591,22 @@ def test_cleaning_pack_unchanged_by_coating_option(fake_world, tmp_path, monkeyp
     m = deliver.package(_pack_rows(fake_world), deliver.resolve_territory("Kansas City", None, 40), "Sample", str(tmp_path / "o"))
     hdr = [c.value for c in openpyxl.load_workbook(m["files"][0])["Leads"][1]]
     assert "Est. cleaning job ($)" in hdr and "Soiling risk" not in hdr and m["price_per_panel"] == 12.0
+
+
+def test_campus_weak_and_multitenant_names():
+    # individual practitioners / associations rank below the real business in a building
+    assert pipeline._is_weak({"name": "Dr. Dustin Woyski DO"}) and pipeline._is_weak({"name": "North American Corriente Association"})
+    assert not pipeline._is_weak({"name": "Starbucks"}) and not pipeline._is_weak({"name": "Dover Animal Hospital"})
+    # a multi-tenant building with no name or owner is labelled by the tenants nearest the panels
+    r = export._prep({"multi_tenant": True, "tenants": 5, "tenant_names": "Gladstone Animal Clinic, Subway, Nail Bar",
+                      "lat": 39.2384, "lon": -94.5754})
+    assert r["display_name"] == "Gladstone Animal Clinic / Subway +3 more (multi-tenant)"
+    # campus buildings sharing the college's phone become one lead named for the college
+    terr = {"name": "t", "lat": 39.2, "lon": -94.6, "radius_mi": 50, "states": []}
+    base = {"tier": "4 - Verify first", "est_panels": "40", "arrays": "2", "lat": "39.2", "lon": "-94.6", "state": "MO",
+            "phone": "+18166044000"}
+    rows = [dict(base, site_id=f"m{i}", display_name=f"MCC-Maple Woods – {b}", lon=str(-94.6 + i * 0.001))
+            for i, b in enumerate(["Student Center", "Learning Resources", "Facilities"])]
+    leads = deliver.build_leads(rows, terr)
+    assert len(leads) == 1 and leads[0]["merged_sites"] == 3
+    assert leads[0]["display_name"] == "MCC-Maple Woods"

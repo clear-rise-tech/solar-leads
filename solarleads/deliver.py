@@ -247,6 +247,11 @@ def build_leads(rows: list[dict], territory: dict, price_per_panel: float = 12.0
         if target is None and owner and not any(g in owner for g in GOV):
             target = next((g for g in groups if (g[0].get("owner") or "").upper().strip() == owner and
                            haversine_m(_num(g[0]["lat"]), _num(g[0]["lon"]), _num(r["lat"]), _num(r["lon"])) <= 500), None)
+        # Campus buildings ("Institution – Building") with the same phone within 500 m: one customer.
+        # (Limited to campus rows so nearby chain stores sharing a head-office number stay separate.)
+        if target is None and r["phone_clean"] and " – " in str(r.get("display_name", "")):
+            target = next((g for g in groups if any(x["phone_clean"] == r["phone_clean"] for x in g) and
+                           haversine_m(_num(g[0]["lat"]), _num(g[0]["lon"]), _num(r["lat"]), _num(r["lon"])) <= 500), None)
         if target is None:
             target = []
             groups.append(target)
@@ -263,6 +268,10 @@ def build_leads(rows: list[dict], territory: dict, price_per_panel: float = 12.0
             top["est_panels"] = sum(int(_num(r.get("est_panels"))) for r in g)
             top["tier"] = min((str(r.get("tier", "4")) for r in g), key=lambda t: t[0])
             top["merged_sites"] = len(g)
+            # campus rows are named "Institution – Building": the merged lead is the institution
+            heads = {str(r.get("display_name", "")).split(" – ")[0] for r in g if " – " in str(r.get("display_name", ""))}
+            if len(heads) == 1 and " – " in str(top.get("display_name", "")):
+                top["display_name"] = heads.pop()
         leads.append(top)
     # Chain / corporate numbers: the same phone on 3+ sites is a head-office line, not the site.
     counts: dict[str, int] = {}

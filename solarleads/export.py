@@ -23,8 +23,14 @@ def _prep(s: dict) -> dict:
     r = dict(s)
     r["bldg_type"] = " / ".join(x for x in [s.get("bldg_subtype", ""), s.get("bldg_class", "")] if x)
     if s.get("multi_tenant"):
-        label = s.get("bldg_name") or (s.get("owner", "").title() if s.get("owner") else "Multi-tenant building")
-        r["display_name"] = f"{label} ({s.get('tenants')} businesses)"
+        label = s.get("bldg_name") or (s.get("owner", "").title() if s.get("owner") else "")
+        if label:
+            r["display_name"] = f"{label} ({s.get('tenants')} businesses)"
+        else:  # name the tenants nearest the panels so the caller knows who to ask for
+            names = [n.strip() for n in (s.get("tenant_names") or "").split(",") if n.strip()]
+            more = max(int(s.get("tenants") or 0) - 2, 0)
+            r["display_name"] = (" / ".join(names[:2]) + (f" +{more} more" if more else "") + " (multi-tenant)"
+                                 if names else f"Multi-tenant building ({s.get('tenants')} businesses)")
         return _finish(r, s)
     r["display_name"] = s.get("biz_name") or s.get("osm_name") or (s.get("owner", "").title() + " (owner)" if s.get("owner") else _unnamed(s))
     return _finish(r, s)
