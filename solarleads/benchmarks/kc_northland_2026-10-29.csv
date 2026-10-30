@@ -1,0 +1,197 @@
+answer_id,county,status,arrays_mapped,lat,lon,parcel_id,site_name,county_owner,city
+NL-000,Clay,unclear,15,39.197363,-94.386582,15801000200200,,LIBERTY CITY OF,Liberty
+NL-001,Clay,panels_confirmed,13,39.204699,-94.384596,15801000100100,,LIBERTY CITY OF,Liberty
+NL-002,Clay,panels_confirmed,12,39.178424,-94.55728,17308000100100,,SCHOOL DISTRICT 74,Kansas City
+NL-003,Clay,panels_confirmed,11,39.125665,-94.581536,17617000200400,,EXL ACQUISITION LLC,North Kansas City
+NL-004,Clay,panels_confirmed,11,39.164227,-94.478289,18204000100100,,KANSAS CITY AUTO AUCTION INC,Kansas City
+NL-005,Clay,panels_confirmed,9,39.175606,-94.532404,18106001700600,,SPINNING WHEELS MANAGEMENT LLC,Kansas City
+NL-006,Clay,panels_confirmed,7,39.133843,-94.577031,17614000300100,,1349 SWIFT LLC,North Kansas City
+NL-007,Clay,panels_confirmed,7,39.233717,-94.430748,15405000200600,,VOCATIONAL SERVICES CLAY-PLATTE,Liberty
+NL-008,Clay,panels_confirmed,6,39.144729,-94.557531,17612000100200,Starbucks,MMOF IV KANSAS CITY PORTFOLIO LLC,North Kansas City
+NL-009,Clay,panels_confirmed,6,39.166358,-94.487358,18202000100600,,KANSAS CITY AUTO AUCTION INC,Kansas City
+NL-010,Clay,panels_confirmed_multifamily,6,39.204213,-94.588418,13808000201900,,PCRE RN KC LLC,Kansas City
+NL-011,Clay,panels_confirmed,5,39.137915,-94.556895,17612000200200,,NL PROPERTIES LLC,North Kansas City
+NL-012,Clay,panels_confirmed,5,39.137105,-94.55849,17616000100100,,INDUSTRIAL SPRING CORP,North Kansas City
+NL-013,Clay,panels_confirmed,4,39.222313,-94.573249,13614001000300,Oakhill Day School,OAKHILL DAY SCHOOL,Gladstone
+NL-014,Clay,panels_confirmed_multifamily,4,39.149255,-94.578765,17605000300300,,NORTHGATE SENIORS-PHASE 3 LP,North Kansas City
+NL-015,Clay,panels_confirmed,4,39.126555,-94.575998,17618000600700,,VC999 PACKAGING SYSTEMS INC,North Kansas City
+NL-016,Clay,panels_confirmed,4,39.372575,-94.574439,05909000101600,,SCHOOL DISTRICT R-II (27),Smithville
+NL-017,Clay,panels_confirmed,4,39.237615,-94.46273,14303000100519,,BOCADA 8050 N CHURCH ROAD LLC,Liberty
+NL-018,Clay,panels_confirmed,4,39.232291,-94.577591,13605001100100,ALDI,ALDI INC,Gladstone
+NL-019,Clay,panels_confirmed,4,39.182124,-94.533467,14718001101700,Saint Gabriel Catholic School,CATHOLIC DIOCESE OF KC-ST JOSEPH,Kansas City
+NL-020,Clay,panels_confirmed,4,39.203507,-94.577106,13905001501001,,BMDR HOLDINGS LLC,Gladstone
+NL-021,Clay,panels_confirmed_multifamily,4,39.205288,-94.587606,13808000201800,,PCRE RN KC LLC,Kansas City
+NL-022,Clay,panels_confirmed,4,39.156027,-94.576192,17318000100800,NorthPoint Development,NP OFFICE HQ LLC,Kansas City
+NL-023,Clay,panels_confirmed,3,39.245878,-94.54685,14113000200400,Metropolitan Community College - Maple Woods,JUNIOR COLLEGE DISTRICT OF METROPOLITAN,Kansas City
+NL-024,Clay,panels_confirmed,3,39.127221,-94.581566,17617000200300,,EXL ACQUISITION LLC,North Kansas City
+NL-025,Clay,panels_confirmed,3,39.143532,-94.573404,17610000600100,,NORTH KANSAS CITY CITY OF,North Kansas City
+NL-026,Clay,unclear,3,39.141995,-94.570198,17610001800200,,NORTH KANSAS CITY CITY OF,North Kansas City
+NL-027,Clay,panels_confirmed,3,39.250951,-94.447084,14315000100400,Attic Storage of Liberty,ATTIC STORAGE OF LIBERTY LLC,Liberty
+NL-028,Clay,panels_confirmed,3,39.23837,-94.575353,13606000300100,Gladstone Animal Clinic,SCHLAGER HOLDINGS LLC,Kansas City
+NL-029,Clay,panels_confirmed,3,39.267451,-94.578092,13305000100113,,EYE OF THE TIGER INVESTMENTS LLC,Kansas City
+NL-030,Clay,panels_confirmed,3,39.264941,-94.573722,13306000500203,Priority Care Pediatrics North Oak,PRIORITY CARE PROPERTIES LLC,Kansas City
+NL-031,Clay,panels_confirmed,3,39.354979,-94.234591,08918000302000,Vintage Plaza Veterinary Hospital,WATKINS CLINTON J & ELENA D,Excelsior Springs
+NL-032,Clay,panels_confirmed,3,39.377347,-94.584947,05802000100208,Porters Ace of Smithville,PORTER LINDA L,Smithville
+NL-033,Clay,panels_confirmed,3,39.214679,-94.499029,14503000400200,Shoal Creek Patrol Division Station,KANSAS CITY CITY OF,Kansas City
+NL-034,Clay,panels_confirmed,3,39.209116,-94.548993,13908000100100,Ballet North,YOUTH MOVEMENT INC,Gladstone
+NL-035,Clay,unclear,3,39.140227,-94.561761,17611000600900,,NORTH KANSAS CITY CITY OF,North Kansas City
+NL-036,Clay,panels_confirmed,2,39.245851,-94.548591,13320000100102,Metropolitan Community College - Maple Woods,JUNIOR COLLEGE DISTRICT OF METROPOLITAN,Kansas City
+NL-037,Clay,unclear,2,39.167301,-94.522211,18111001400102,,BETHEL AREA HOUSING SOUTH,Kansas City
+NL-038,Clay,unclear,2,39.167961,-94.522651,18111001400100,Bethel United Church of Christ,BETHEL UNITED CHURCH OF CHRIST,Kansas City
+NL-039,Clay,panels_confirmed,2,39.172858,-94.494525,18210000100100,Super 8,LAXMI ANAYA LLC,Kansas City
+NL-040,Clay,panels_confirmed,2,39.220594,-94.571065,13614002000100,Gladstone Community Center,GLADSTONE CITY OF,Gladstone
+NL-041,Clay,panels_confirmed,2,39.125122,-94.582893,17617000101300,,NORTH KANSAS CITY CITY OF,North Kansas City
+NL-042,Clay,panels_confirmed,2,39.136747,-94.581017,17613000202100,,SLAVIK GREGORY M TRUST & SLAVIK ROBERT J TRUST,North Kansas City
+NL-043,Clay,panels_confirmed,2,39.139897,-94.58224,17609000100600,,VOCATIONAL SERVICES INC,North Kansas City
+NL-044,Clay,panels_confirmed_multifamily,2,39.150372,-94.577635,17605000300201,,GARDENS AT NORTHGATE VILLAGE LLC,North Kansas City
+NL-045,Clay,panels_confirmed,2,39.142876,-94.576887,17610000900400,McCrummen Immigration Law Group,2005 SWIFT NKC LLC,North Kansas City
+NL-046,Clay,panels_confirmed,2,39.14253,-94.575787,17610000800900,Screenland Armour Theater,BMAR LLC,North Kansas City
+NL-047,Clay,panels_confirmed,2,39.133164,-94.577065,17614000300500,,NORTH KANSAS CITY BRAKE SERVICE INC,North Kansas City
+NL-048,Clay,panels_confirmed,2,39.140015,-94.576504,17610001102900,Tapcade,COMMERCIAL WATER LLC,North Kansas City
+NL-049,Clay,panels_confirmed,2,39.14069,-94.572396,17610001600100,,NORTH KANSAS CITY CITY OF,North Kansas City
+NL-050,Clay,panels_confirmed,2,39.13704,-94.571845,17614001201900,Zaki,ARMOUR DISTRICT MEMBER LLC,Kansas City
+NL-051,Clay,panels_confirmed,2,39.134909,-94.571289,17614001300502,,REACH INVESTMENTS LLC,North Kansas City
+NL-052,Clay,panels_confirmed,2,39.134405,-94.571902,17614001201100,,JJMAC PROPERTIES LLC,North Kansas City
+NL-053,Clay,panels_confirmed,2,39.139979,-94.571089,17610001800700,,S & D REAL ESTATE LLC,North Kansas City
+NL-054,Clay,panels_confirmed,2,39.142457,-94.56623,17611000400403,Attic Storage of NKC,ATTIC STORAGE OF NKC LLC,North Kansas City
+NL-055,Clay,panels_confirmed,2,39.23456,-94.428213,15405000200800,,VOCATIONAL SERVICES CLAY-PLATTE,Liberty
+NL-056,Clay,panels_confirmed,2,39.13089,-94.574202,17614000500500,,MORASH SHARON H & HIGMAN SANDRA ETAL,North Kansas City
+NL-057,Clay,panels_confirmed,2,39.166788,-94.600593,17204000100302,,BRIARCLIFF SSA LLC,Kansas City
+NL-058,Clay,panels_confirmed,2,39.16674,-94.550956,17312000200100,,KANSAS CITY CITY OF,Kansas City
+NL-059,Clay,panels_confirmed,2,39.167098,-94.554945,17312000100400,Synergy Services,SYNERGY SERVICES INC,Kansas City
+NL-060,Clay,panels_confirmed,2,39.166979,-94.562393,17311000700700,,ISLANDER ASAP LLC,Kansas City
+NL-061,Clay,unclear,2,39.24084,-94.461837,14303000100507,Holiday Inn Express,HE OF LIBERTY LLC,Kansas City
+NL-062,Clay,unclear,2,39.240341,-94.461587,14303000100506,Comfort Suites Kansas City-Liberty,KRISHNA REAL ESTATE LLC,Kansas City
+NL-063,Clay,panels_confirmed,2,39.267779,-94.453412,10919000200112,Liberty Endodontics,LIBERTY INVESTMENT CO LLC,Liberty
+NL-064,Clay,panels_confirmed,2,39.35228,-94.23563,12306002503600,,MISSOURI BJ PARTNERS LLC,Excelsior Springs
+NL-065,Clay,panels_confirmed,2,39.202598,-94.494947,14806001302200,,430 INVESTMENTS LLC,Claycomo
+NL-066,Clay,panels_confirmed,2,39.2129,-94.465383,14618000100100,Life Unlimited Disability Services,LIFE UNLIMITED INC,Liberty
+NL-067,Clay,panels_confirmed,2,39.218579,-94.468508,14613000100400,,KTTR SERVICES INC,Pleasant Valley
+NL-068,Clay,panels_confirmed,2,39.238894,-94.466679,14303000100534,"Singhal Plastic Surgery, P.C.",EVENTUS PLASTIKOS LLC,Kansas City
+NL-069,Clay,unclear,2,39.206793,-94.575995,13906000802001,Olympic Car Wash,AAA LIFETIME EXTERIOR COATING INC,Gladstone
+NL-070,Clay,panels_confirmed,2,39.127244,-94.583827,17617000100600,,WALSETH NKC LLC,North Kansas City
+NL-071,Clay,panels_confirmed,2,39.366605,-94.58292,05913000102400,Heritage Tractor,MUTH PROPERTIES LLC,Smithville
+NL-072,Clay,panels_confirmed,2,39.242518,-94.447844,14319000100110,,LIBERTY HOTEL GROUP LLC,Liberty
+NL-073,Clay,panels_confirmed,2,39.164875,-94.549439,17316000100100,Kansas City Fire Station 6,KANSAS CITY CITY OF,Kansas City
+NL-074,Clay,panels_confirmed,2,39.244027,-94.521045,14119000900300,KCFD Station 14,KANSAS CITY CITY OF,Kansas City
+NL-075,Clay,panels_confirmed,2,39.175872,-94.592021,17208000601000,Corporate Hills North,AMG BELLEVIEW LLC 67.45%,Gladstone
+NL-076,Clay,panels_confirmed,2,39.209405,-94.547739,14705000300101,Commerce Bank,COMMERCE BANK,Gladstone
+NL-077,Clay,panels_confirmed,2,39.200972,-94.546547,14709000300300,,MAJOR STROM DEVELOPMENT INC,Gladstone
+NL-078,Clay,panels_confirmed,2,39.200296,-94.547395,14709000300600,,CURRY COMMERCIAL LLC,Gladstone
+NL-079,Clay,panels_confirmed,2,39.144879,-94.551347,18401000200100,,NORTH KANSAS CITY CITY OF,North Kansas City
+NL-080,Clay,panels_confirmed,1,39.246548,-94.54875,13316000201201,Metropolitan Community College - Maple Woods,JUNIOR COLLEGE DISTRICT OF METROPOLITAN,Kansas City
+NL-081,Clay,panels_confirmed,1,39.244433,-94.543262,14117000400201,,TRI-COUNTY FOUNDATION,Kansas City
+NL-082,Clay,panels_confirmed,1,39.247101,-94.547506,14113000200200,Metropolitan Community College - Maple Woods,JUNIOR COLLEGE DISTRICT OF METROPOLITAN,Kansas City
+NL-083,Clay,panels_confirmed,1,39.246205,-94.54748,14113000200100,Metropolitan Community College - Maple Woods,JUNIOR COLLEGE DISTRICT OF METROPOLITAN,Kansas City
+NL-084,Clay,panels_confirmed,1,39.245436,-94.548222,13320000100100,Metropolitan Community College - Maple Woods,JUNIOR COLLEGE DISTRICT OF METROPOLITAN,Kansas City
+NL-085,Clay,panels_confirmed,1,39.245206,-94.550051,13320000100101,Metropolitan Community College - Maple Woods,JUNIOR COLLEGE DISTRICT OF METROPOLITAN,Kansas City
+NL-086,Clay,panels_confirmed,1,39.241617,-94.546625,14117000500101,Metropolitan Community College - Maple Woods,JUNIOR COLLEGE DISTRICT OF METROPOLITAN,Kansas City
+NL-087,Clay,panels_confirmed,1,39.241549,-94.547448,14117000500100,Metropolitan Community College - Maple Woods,JUNIOR COLLEGE DISTRICT OF METROPOLITAN,Kansas City
+NL-088,Clay,panels_confirmed,1,39.231328,-94.572359,13610000200100,,J & B ASSETS LLC,Gladstone
+NL-089,Clay,panels_confirmed,1,39.251255,-94.575512,13314000800200,Miss Dianna's School of Dance,MISS DIANNA'S SCHOOL OF DANCE INC,Kansas City
+NL-090,Clay,panels_confirmed,1,39.123625,-94.581755,17617000200500,,NORTH KANSAS CITY CITY OF,Kansas City
+NL-091,Clay,panels_confirmed,1,39.134738,-94.581779,17613000200500,,CORDOBA HOLDINGS KC LLC,North Kansas City
+NL-092,Clay,panels_confirmed,1,39.14202,-94.580014,17609000700100,First Missouri Bank,NINETEEN TWENTY-FIVE BURLINGTON LLC,North Kansas City
+NL-093,Clay,panels_confirmed,1,39.142036,-94.578767,17609000800400,ProPrint,SHEPARD BUILDING LLC,North Kansas City
+NL-094,Clay,panels_confirmed,1,39.138832,-94.579212,17609000200500,,PALM CITY V LLC,North Kansas City
+NL-095,Clay,unclear,1,39.13827,-94.578622,17609000300300,,NORTH KANSAS CITY CITY OF,North Kansas City
+NL-096,Clay,panels_confirmed,1,39.135401,-94.580007,17613000400101,,KCCB PROPERTIES LLC,North Kansas City
+NL-097,Clay,panels_confirmed,1,39.13482,-94.578672,17613000800600,,K DEVELOPMENT LLC,North Kansas City
+NL-098,Clay,panels_confirmed,1,39.133969,-94.57995,17613000500100,,PHILLIPS INVESTMENTS LLC,North Kansas City
+NL-099,Clay,panels_confirmed,1,39.132119,-94.576947,17614000400100,,HUFFAKER REAL ESTATE LLC,North Kansas City
+NL-100,Clay,panels_confirmed,1,39.139022,-94.576474,17610001102400,RS Electric,R/S ELECTRIC PROPERTIES LLC,North Kansas City
+NL-101,Clay,panels_confirmed,1,39.135714,-94.571911,17614001201600,,IRON PROPERTIES LLC,North Kansas City
+NL-102,Clay,panels_confirmed,1,39.132666,-94.5713,17614001300600,Davis Paint Co,DAVIS PAINT CO,North Kansas City
+NL-103,Clay,panels_confirmed,1,39.13312,-94.570229,17614001400200,,FABRI-QUILT INC,North Kansas City
+NL-104,Clay,panels_confirmed,1,39.251048,-94.454064,14315000300104,,BECK HOLDINGS LLC,Liberty
+NL-105,Clay,panels_confirmed,1,39.243824,-94.448355,14319000100103,UMB Bank,UMB BANK,Liberty
+NL-106,Clay,unclear,1,39.247297,-94.44439,14316000200400,Pony Express Bank,PONY EXPRESS BANK,Liberty
+NL-107,Clay,panels_confirmed,1,39.246006,-94.44324,14316000500100,Landmark Center,LANDMARK CENTER LLC,Liberty
+NL-108,Clay,panels_confirmed,1,39.247045,-94.582051,13313000700300,Commerce Bank,COMMERCE BANK,Kansas City
+NL-109,Clay,panels_confirmed,1,39.364543,-94.372872,07815000200302,Holiday Inn Express & Suites Kearney,JAY AMBE KEARNEY LLC,Kearney
+NL-110,Clay,unclear,1,39.374244,-94.379658,07810000400300,,LSC REALTY COLORADO LLC,Kearney
+NL-111,Clay,panels_confirmed,1,39.368285,-94.383445,07810000201600,,PLATTE-CLAY PROPERTIES,Kearney
+NL-112,Clay,panels_confirmed,1,39.128621,-94.569805,17618000601900,,NL PROPERTIES LLC,North Kansas City
+NL-113,Clay,panels_confirmed,1,39.130276,-94.557428,17616000100600,,ARROWHEAD SPECIALTY PROPERTIES LLC,North Kansas City
+NL-114,Clay,panels_confirmed,1,39.138986,-94.556839,17612000200100,,NORTH KANSAS CITY CITY OF,North Kansas City
+NL-115,Clay,panels_confirmed,1,39.169859,-94.597686,17211000100100,Village at Briarcliff,BRIARCLIFF VILLAGE LLC,Kansas City
+NL-116,Clay,panels_confirmed_multifamily,1,39.15131,-94.577695,17605000300200,,GARDENS AT NORTHGATE VILLAGE LLC,North Kansas City
+NL-117,Clay,panels_confirmed,1,39.396189,-94.577361,05613000200100,Smithville Maple Elementary,SCHOOL DISTRICT R-II (27),Smithville
+NL-118,Clay,panels_confirmed,1,39.339128,-94.251027,12212000800200,Tractor Supply Company,GRAND CANAL DOCK I LLC,Excelsior Springs
+NL-119,Clay,panels_confirmed,1,39.351415,-94.235585,12306002503500,,TRIPLE H LEASING LLC,Excelsior Springs
+NL-120,Clay,panels_confirmed,1,39.147078,-94.558142,17608000600800,Econo Lodge,NORTH KANSAS CITY HOTEL CORP,Kansas City
+NL-121,Clay,panels_confirmed,1,39.213017,-94.465337,14618000100102,Immacolata Manor,IMMACOLATA MANOR,Liberty
+NL-122,Clay,panels_confirmed_multifamily,1,39.238234,-94.466634,14303000100502,,VP WILDOAK MO OWNER LLC,Kansas City
+NL-123,Clay,unclear,1,39.20127,-94.356063,15901000101000,,EWERT FAMILY FARMS,
+NL-124,Clay,panels_confirmed,1,39.159481,-94.544047,18113001700200,Avondale United Methodist Church,AVONDALE UNITED METHODIST CHURCH,Kansas City
+NL-125,Clay,panels_confirmed,1,39.184937,-94.540094,14717001101400,Episcopal Church of the Good Shepherd,CHURCH OF THE GOOD SHEPHERD,Kansas City
+NL-126,Clay,panels_confirmed,1,39.130088,-94.58413,17617000100200,,AILEEN QUIRK & SONS INC,North Kansas City
+NL-127,Clay,panels_confirmed,1,39.120379,-94.590457,17802000100104,VML,KANSAS CITY CITY OF,Kansas City
+NL-128,Clay,panels_confirmed,1,39.213895,-94.575473,13618000700200,,ORDER OF THE PHOENIX LLC,Gladstone
+NL-129,Clay,panels_confirmed,1,39.218855,-94.576713,13613000901400,Paris II Beauty School,NAILED IT INVESTMENTS LLC,Gladstone
+NL-130,Clay,panels_confirmed,1,39.218336,-94.576774,13613000901500,Fountain Place,FOUNTAINVIEW SQUARE,Gladstone
+NL-131,Clay,panels_confirmed,1,39.218674,-94.577989,13613000901401,Quality Vending Co.,NAILED IT INVESTMENTS LLC,Gladstone
+NL-132,Clay,panels_confirmed,1,39.224257,-94.578599,13613001200500,,10172 BUILDING LLC,Gladstone
+NL-133,Clay,panels_confirmed,1,39.127455,-94.583314,17617000100602,,STAR ACQUISITIONS INC,North Kansas City
+NL-134,Clay,panels_confirmed,1,39.135924,-94.58107,17613000202000,,CCSC PROPERTIES LLC,North Kansas City
+NL-135,Clay,panels_confirmed,1,39.137976,-94.571253,17610001801300,,1601 IRON STREET LLC,North Kansas City
+NL-136,Clay,panels_confirmed,1,39.34001,-94.243562,12309000101000,NAPA Auto Parts,B & B ENTERPRIZE LLC,Excelsior Springs
+NL-137,Clay,panels_confirmed,1,39.205582,-94.576998,13905001501400,DriveTime,SPIRIT MASTER FUNDING IX LLC,Gladstone
+NL-138,Clay,panels_confirmed,1,39.217119,-94.587452,13520000101700,,NAA PROPERTIES INC,Kansas City
+NL-139,Clay,unclear,1,39.216681,-94.587553,13520000101601,,NAA PROPERTIES INC,Kansas City
+NL-140,Clay,panels_confirmed,1,39.218169,-94.475324,14516000801300,Shoal Creek Community Church,SHOAL CREEK COMMUNITY CHURCH,Pleasant Valley
+NL-141,Clay,panels_confirmed,1,39.215167,-94.482493,14520000104812,Solar Shield,BLANKINSHIP PROPERTIES LLC,Pleasant Valley
+NL-142,Clay,panels_confirmed,1,39.214473,-94.480694,14520000104904,,SUNSPOT PROPERTIES 2 LLC,Pleasant Valley
+NL-143,Clay,panels_confirmed,1,39.295135,-94.574862,09906000500600,KCFD Fire Station 3,KANSAS CITY CITY OF,Kansas City
+NL-144,Clay,panels_confirmed,1,39.152709,-94.539857,18118000900900,Cerner/Oracle campus,CERNER PROPERTIES INC,Kansas City
+NL-145,Clay,panels_confirmed,1,39.242477,-94.448486,14319000100109,,LIBERTY PROFESSIONAL INVESTORS LLC,Liberty
+NL-146,Clay,panels_confirmed,1,39.175363,-94.59377,17208000600300,,GLADSTONE CITY OF,Gladstone
+NL-147,Clay,panels_confirmed,1,39.212153,-94.547873,14417001800200,,LICHNER ANGELA,Gladstone
+NL-148,Clay,panels_confirmed,1,39.205785,-94.54752,14705000701800,UMB Bank,UNITED MISSOURI BANK OF KC,Gladstone
+NL-149,Clay,panels_confirmed,1,39.204863,-94.545137,14705000701702,,2900 BC LLC,Gladstone
+NL-150,Clay,panels_confirmed,1,39.203392,-94.545124,14705000900300,Kendallwood Commercial Center,CSA INVESTMENTS LLC,Gladstone
+NL-151,Clay,panels_confirmed,1,39.199984,-94.549149,13912001902700,,S & M BROTHERS LLC,Gladstone
+NL-152,Clay,panels_confirmed,1,39.182277,-94.521961,14719001701600,KCFD Station 34,KANSAS CITY CITY OF,Kansas City
+NL-153,Platte,panels_confirmed,1,39.267387,-94.667402,20-1.0-01-000-000-006.000,,,Kansas City
+NL-154,Platte,panels_confirmed,2,39.265548,-94.666419,20-1.0-01-000-000-030.000,,,Kansas City
+NL-155,Platte,panels_confirmed,2,39.210849,-94.626951,19-4.0-20-400-001-018.000,KCFD Fire Station 4,,Kansas City
+NL-156,Platte,panels_confirmed,1,39.202705,-94.609717,19-8.0-28-400-003-001.000,Line Creek Community Center and Ice Arena,,Kansas City
+NL-157,Platte,panels_confirmed,3,39.187991,-94.607043,19-8.0-33-400-006-025.000,U-Haul,,Northmoor
+NL-158,Platte,panels_confirmed,1,39.187914,-94.607261,19-8.0-33-400-006-001.001,U-Haul,,Northmoor
+NL-159,Platte,panels_confirmed,1,39.187193,-94.607858,19-8.0-33-400-006-007.001,Line Creek LLC,,Northmoor
+NL-160,Platte,panels_confirmed,4,39.218825,-94.664471,20-6.0-24-100-006-003.000,Saint Therese School,,Kansas City
+NL-161,Platte,panels_confirmed,2,39.210274,-94.686611,20-7.0-26-100-006-006.000,Commerce Bank,,Parkville
+NL-162,Platte,panels_confirmed,3,39.210405,-94.683127,20-7.0-26-100-002-004.000,,,Parkville
+NL-163,Platte,panels_confirmed,2,39.20895,-94.683644,20-7.0-26-100-002-045.000,Parkville Heights Animal Hospital,,Parkville
+NL-164,Platte,panels_confirmed,1,39.207663,-94.687581,20-7.0-26-200-002-041.000,,,Parkville
+NL-165,Platte,panels_confirmed,2,39.208636,-94.689523,20-7.0-26-200-002-050.000,,,Parkville
+NL-166,Platte,panels_confirmed,1,39.209004,-94.688199,20-7.0-26-200-002-058.000,,,Parkville
+NL-167,Platte,panels_confirmed,16,39.205001,-94.683229,20-7.0-26-100-002-030.002,Parkville Athletic Complex,,Parkville
+NL-168,Platte,panels_confirmed,2,39.204752,-94.683159,20-7.0-26-100-002-029.003,Parkville Athletic Complex,,Parkville
+NL-169,Platte,panels_confirmed,3,39.192423,-94.680568,20-7.0-35-100-008-001.000,,,Parkville
+NL-170,Platte,panels_confirmed,1,39.350478,-94.759471,17-3.0-06-000-000-009.000,Airport Chrysler Dodge Jeep Ram,,Platte City
+NL-171,Platte,panels_confirmed,3,39.246196,-94.647721,19-3.0-07-400-006-021.004,Commerce Bank,,Kansas City
+NL-172,Platte,panels_confirmed,2,39.245862,-94.647675,19-3.0-07-400-006-021.005,Embassy Plaza,,Kansas City
+NL-173,Platte,unclear,3,39.243672,-94.660602,20-1.0-12-400-002-073.000,La Quinta Inn,,Kansas City
+NL-174,Platte,panels_confirmed,17,39.269646,-94.672681,17-7.0-36-000-012-006.000,Platte Industrial Park bldg,,Kansas City
+NL-175,Platte,panels_confirmed,2,39.269756,-94.674678,17-7.0-36-000-011-001.000,Platte Industrial Park bldg,,Kansas City
+NL-176,Platte,panels_confirmed,1,39.171004,-94.637915,23-3.0-05-000-000-058.000,Horizons Industrial Park bldg,,Riverside
+NL-177,Platte,panels_confirmed,1,39.16876,-94.635795,23-3.0-05-000-000-057.000,Horizons Industrial Park bldg,,Riverside
+NL-178,Platte,panels_confirmed,1,39.167818,-94.636042,23-3.0-05-000-000-068.000,Horizons Industrial Park bldg,,Riverside
+NL-179,Platte,panels_confirmed,3,39.244832,-94.659519,20-1.0-12-400-001-001.015,UMB Bank,,Kansas City
+NL-180,Platte,panels_confirmed,5,39.165541,-94.647834,23-3.0-07-100-001-001.000,Riverside warehouse,,Riverside
+NL-181,Platte,panels_confirmed,5,39.208678,-94.647635,19-9.0-30-100-003-001.008,Village at Burlington Creek,,Kansas City
+NL-182,Platte,panels_confirmed,2,39.245582,-94.667956,20-1.0-12-400-001-009.002,,,Kansas City
+NL-183,Platte,panels_confirmed,1,39.374864,-94.792435,13-7.0-26-000-000-014.000,,,Tracy
+NL-184,Platte,panels_confirmed,3,39.379922,-94.794539,13-7.0-26-100-001-004.000,,,Tracy
+NL-191,Platte,panels_confirmed,1,39.248515,-94.631634,19-3.0-08-200-001-001.005,Kwik Kar Automotive,,Kansas City
+NL-192,Platte,panels_confirmed,5,39.222476,-94.650566,19-4.0-19-200-001-001.003,,,Kansas City
+NL-193,Platte,panels_confirmed,1,39.422748,-94.899003,14-1.0-12-200-003-008.000,Bank of Weston,,Weston
+NL-194,Platte,panels_confirmed,2,39.422761,-94.901189,14-1.0-11-000-000-003.001,Trex Mart,,Weston
+NL-200,Platte,panels_confirmed,2,39.297618,-94.674985,17-6.0-24-000-000-011.004,Airworld Center bldg,,Kansas City
+NL-201,Platte,panels_confirmed,4,39.295801,-94.680678,17-7.0-26-000-000-002.001,Airworld Center bldg,,Kansas City
+NL-202,Platte,panels_confirmed,1,39.213174,-94.662391,20-6.0-24-400-001-002.000,Lakeview Middle School,,Kansas City
+NL-204,Platte,panels_confirmed,5,39.228097,-94.781435,21-6.0-13-000-000-033.000,Heartland Presbyterian Center,,
+NL-211,Platte,unclear,1,39.422246,-94.901943,14-1.0-11-000-000-009.000,,,Weston
+NL-212,Platte,unclear,1,39.367484,-94.781792,13-7.0-36-200-002-006.001,,,Platte City
+NL-213,Platte,panels_confirmed,1,39.367673,-94.778606,13-7.0-36-100-003-008.000,State Farm Insurance,,Platte City

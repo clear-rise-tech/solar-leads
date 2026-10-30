@@ -1,0 +1,192 @@
+name: Build solar call lists
+
+on:
+  workflow_dispatch:
+    inputs:
+      states:
+        description: "State codes separated by spaces (e.g. MO KS), or ALL for nationwide"
+        required: true
+        default: "MO KS"
+      refresh:
+        description: "Re-scan the map for new installs"
+        type: boolean
+        default: false
+      max_roof_checks:
+        description: "Max AI roof checks per state this run (spending cap)"
+        default: "500"
+      max_regrid_lookups:
+        description: "Max Regrid owner lookups per state this run (spending cap)"
+        default: "1000"
+      client_metro:
+        description: "Lead pack: metro name (e.g. Kansas City) or LAT,LON. Leave blank for no pack. Tip: set states to AUTO"
+        default: ""
+      client_radius:
+        description: "Lead pack: miles from the metro center"
+        default: "35"
+      client_name:
+        description: "Lead pack: customer name (Sample = demo, does not reserve the territory)"
+        default: "Sample"
+      offer:
+        description: "Lead pack: what the buyer sells"
+        type: choice
+        options: [cleaning, coating]
+        default: cleaning
+      price_per_panel:
+        description: "Lead pack: buyer's price per panel for job estimates ($). Blank = $12 cleaning / $6 coating"
+        default: ""
+  schedule:
+    # 2nd of every month, 6:17 UTC: refresh the states listed in the MONTHLY_STATES repo variable
+    - cron: "17 6 2 * *"
+
+permissions:
+  contents: read
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      states: ${{ steps.p.outputs.states }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: p
+        env:
+          INPUT: ${{ github.event.inputs.states || vars.MONTHLY_STATES || 'MO KS' }}
+          METRO: ${{ github.event.inputs.client_metro }}
+        run: |
+          python3 - <<'EOF'
+          import json, os
+          ALL = "AL AK AZ AR CA CO CT DE DC FL GA HI ID IL IN IA KS KY LA ME MD MA MI MN MS MO MT NE NV NH NJ NM NY NC ND OH OK OR PA RI SC SD TN TX UT VT VA WA WV WI WY".split()
+          raw = os.environ["INPUT"].upper().replace(",", " ").split()
+          if raw == ["AUTO"]:
+              import sys
+              sys.path.insert(0, ".")
+              from solarleads.deliver import METROS
+              m = next((k for k in METROS if k.lower() == os.environ.get("METRO", "").strip().lower()), None)
+              if not m:
+                  raise SystemExit("states=AUTO needs a known client_metro (run 'python -m solarleads metros' for the list)")
+              raw = METROS[m][2].split()
+          states = ALL if raw == ["ALL"] else [s for s in raw if s in ALL]
+          if not states:
+              raise SystemExit("No valid state codes given")
+          with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+              f.write("states=" + json.dumps(states) + "\n")
+          print("States:", states)
+          EOF
+
+  run:
+    needs: plan
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    strategy:
+      fail-fast: false
+      max-parallel: 3   # be polite to the free map servers
+      matrix:
+        state: ${{ fromJson(needs.plan.outputs.states) }}
+    env:
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      REGRID_TOKEN: ${{ secrets.REGRID_TOKEN }}
+      MAX_ROOF_CHECKS: ${{ github.event.inputs.max_roof_checks || '500' }}
+      MAX_REGRID_LOOKUPS: ${{ github.event.inputs.max_regrid_lookups || '1000' }}
+      DATA_DIR: data
+      OUT_DIR: output
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+
+      # The cache (one small database file) holds map-scan progress and every paid lookup,
+      # so runs resume where they stopped and never pay for the same site twice.
+      - name: Restore cache
+        uses: actions/cache/restore@v4
+        with:
+          path: data/solarleads.sqlite
+          key: solarleads-${{ matrix.state }}-${{ github.run_id }}
+          restore-keys: solarleads-${{ matrix.state }}-
+
+      - name: Build call list
+        run: |
+          if [ "${{ github.event_name }}" = "schedule" ] || [ "${{ github.event.inputs.refresh }}" = "true" ]; then
+            python -m solarleads run ${{ matrix.state }} --refresh
+          else
+            python -m solarleads run ${{ matrix.state }}
+          fi
+
+      - name: Save cache (even if the run stopped early)
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: data/solarleads.sqlite
+          key: solarleads-${{ matrix.state }}-${{ github.run_id }}
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: solar-leads-${{ matrix.state }}
+          path: output/
+          if-no-files-found: ignore
+          retention-days: 90
+
+  combine:
+    needs: run
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: solar-leads-*
+          path: state-lists
+      - run: python -m solarleads combine state-lists
+        env:
+          OUT_DIR: output
+
+      # Customer lead pack (only when client_metro is filled in)
+      - name: Restore sold-territory register
+        if: github.event.inputs.client_metro != ''
+        uses: actions/cache/restore@v4
+        with:
+          path: data/territories.json
+          key: territories-${{ github.run_id }}
+          restore-keys: territories-
+      - name: Install LibreOffice (PDF teaser)
+        if: github.event.inputs.client_metro != ''
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq libreoffice-calc > /dev/null
+      - name: Build lead pack
+        if: github.event.inputs.client_metro != ''
+        env:
+          OUT_DIR: output
+          DATA_DIR: data
+          METRO: ${{ github.event.inputs.client_metro }}
+          RADIUS: ${{ github.event.inputs.client_radius }}
+          CUSTOMER: ${{ github.event.inputs.client_name }}
+          PRICE: ${{ github.event.inputs.price_per_panel }}
+          OFFER: ${{ github.event.inputs.offer }}
+        run: |
+          mkdir -p data && [ -f data/territories.json ] || echo "[]" > data/territories.json
+          if echo "$METRO" | grep -Eq '^-?[0-9.]+, *-?[0-9.]+$'; then WHERE="--center $METRO"; else WHERE="--metro"; fi
+          EXTRA="--offer ${OFFER:-cleaning}"
+          [ -n "$PRICE" ] && EXTRA="$EXTRA --price-per-panel $PRICE"
+          if [ "$WHERE" = "--metro" ]; then
+            python -m solarleads package state-lists --metro "$METRO" --radius "$RADIUS" --customer "$CUSTOMER" $EXTRA
+          else
+            python -m solarleads package state-lists $WHERE --radius "$RADIUS" --customer "$CUSTOMER" $EXTRA
+          fi
+      - name: Save sold-territory register
+        if: github.event.inputs.client_metro != ''
+        uses: actions/cache/save@v4
+        with:
+          path: data/territories.json
+          key: territories-${{ github.run_id }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: solar-leads-ALL-STATES-COMBINED
+          path: output/
+          retention-days: 90

@@ -1,0 +1,5 @@
+requests>=2.31
+anthropic>=0.40
+overturemaps>=0.10
+openpyxl>=3.1
+pytest>=8
