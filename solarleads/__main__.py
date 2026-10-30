@@ -47,7 +47,11 @@ def main(argv=None) -> int:
     t.add_argument("lat", type=float)
     t.add_argument("lon", type=float)
     args = ap.parse_args(argv)
-    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+    handlers = [logging.StreamHandler()]
+    if args.cmd == "run":
+        os.makedirs(settings.out_dir, exist_ok=True)
+        handlers.append(logging.FileHandler(os.path.join(settings.out_dir, "run-log.txt")))
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s", handlers=handlers)
 
     if args.cmd == "regrid-test":
         import requests
@@ -145,6 +149,11 @@ def main(argv=None) -> int:
                 logging.info("%s: accuracy scorecard written to %s", st, card)
         except Exception as e:  # one state failing should not stop the others
             logging.exception("%s failed: %s", st, e)
+            if os.environ.get("GITHUB_ACTIONS"):  # show the error on the run page
+                import traceback
+
+                tb = traceback.format_exc()[-3000:].replace("%", "%25").replace("\r", "").replace("\n", "%0A")
+                print(f"::error title={st} failed::{tb}", flush=True)
             failures.append(st)
     if failures:
         print(f"Finished with errors in: {', '.join(failures)} (re-run to resume where they stopped)")
