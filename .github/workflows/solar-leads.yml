@@ -103,12 +103,17 @@ jobs:
       - name: Restore cache
         uses: actions/cache/restore@v4
         with:
-          path: |
-            data/solarleads.sqlite
-            data/places
-            data/buildings
+          path: data/solarleads.sqlite
           key: solarleads-${{ matrix.state }}-${{ github.run_id }}
           restore-keys: solarleads-${{ matrix.state }}-
+      - name: Restore downloaded map data
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            data/places
+            data/buildings
+          key: mapdata-${{ matrix.state }}-${{ github.run_id }}
+          restore-keys: mapdata-${{ matrix.state }}-
 
       - name: Build call list
         run: |
@@ -122,11 +127,16 @@ jobs:
         if: always()
         uses: actions/cache/save@v4
         with:
+          path: data/solarleads.sqlite
+          key: solarleads-${{ matrix.state }}-${{ github.run_id }}
+      - name: Save downloaded map data
+        if: always()
+        uses: actions/cache/save@v4
+        with:
           path: |
-            data/solarleads.sqlite
             data/places
             data/buildings
-          key: solarleads-${{ matrix.state }}-${{ github.run_id }}
+          key: mapdata-${{ matrix.state }}-${{ github.run_id }}
 
       - uses: actions/upload-artifact@v4
         if: always()
