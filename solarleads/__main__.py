@@ -139,14 +139,29 @@ def main(argv=None) -> int:
         return 2
     store = Store()
     failures = []
+
+    def notice(title, text):  # summary lines on the GitHub run page (readable through the API)
+        if os.environ.get("GITHUB_ACTIONS"):
+            text = text[:4000].replace("%", "%25").replace("\r", "").replace("\n", "%0A")
+            print(f"::notice title={title}::{text}", flush=True)
+
     for st in states:
         try:
             sites = run_state(st, refresh_map=args.refresh, store=store)
             res = write_outputs(st, sites, settings.out_dir)
             logging.info("%s: %d leads written to %s", st, res["leads"], res["xlsx"])
+            from collections import Counter
+
+            tiers = Counter(s.get("tier", "") for s in sites)
+            cats = Counter(s.get("category", "") for s in sites if not s.get("tier", "X").startswith("X"))
+            notice(f"{st} results", f"{res['sites']} sites, {res['leads']} leads\nTiers: "
+                   + ", ".join(f"{k}: {v}" for k, v in sorted(tiers.items()))
+                   + "\nCategories: " + ", ".join(f"{k}: {v}" for k, v in cats.most_common(12))
+                   + f"\nWith phone: {sum(1 for s in sites if s.get('phone') and not s.get('tier', 'X').startswith('X'))}")
             card = run_scorecard(st, sort_rows(sites), settings.out_dir)
             if card:
                 logging.info("%s: accuracy scorecard written to %s", st, card)
+                notice(f"{st} scorecard", open(card, encoding="utf-8").read())
         except Exception as e:  # one state failing should not stop the others
             logging.exception("%s failed: %s", st, e)
             if os.environ.get("GITHUB_ACTIONS"):  # show the error on the run page
