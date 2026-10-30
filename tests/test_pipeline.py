@@ -610,3 +610,14 @@ def test_campus_weak_and_multitenant_names():
     leads = deliver.build_leads(rows, terr)
     assert len(leads) == 1 and leads[0]["merged_sites"] == 3
     assert leads[0]["display_name"] == "MCC-Maple Woods"
+
+
+def test_campus_name_is_the_shared_institution(monkeypatch):
+    near = [{"name": "Maple Woods Language-Arts Building", "category": "college_university", "phone": "", "lat": 0, "lon": 0},
+            {"name": "Maple Valley School", "category": "elementary_school", "phone": "+18165550101", "lat": 0, "lon": 0},
+            {"name": "MCC-Maple Woods | Veterinary Technology", "category": "college_university", "phone": "", "lat": 0, "lon": 0},
+            {"name": "MCC-Maple Woods | Library", "category": "college_university", "phone": "+18166044000", "lat": 0, "lon": 0}]
+    monkeypatch.setattr(pipeline.buildings, "businesses_near", lambda b, idx, m: near)
+    inst = pipeline._institution_near({"name": "Student Center"}, object(), "Student Center")
+    assert inst["name"] == "MCC-Maple Woods"
+    assert pipeline._is_weak({"name": "Randy Beale", "category": "real_estate_agent"})

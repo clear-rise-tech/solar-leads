@@ -26,7 +26,10 @@ def _prep(s: dict) -> dict:
         label = s.get("bldg_name") or (s.get("owner", "").title() if s.get("owner") else "")
         if label:
             r["display_name"] = f"{label} ({s.get('tenants')} businesses)"
-        else:  # name the tenants nearest the panels so the caller knows who to ask for
+        elif int(s.get("tenants") or 0) >= 10:  # an office park / shopping center: the landlord is the lead
+            where = s.get("site_addr") or s.get("biz_address") or s.get("site_city") or s.get("biz_city") or ""
+            r["display_name"] = f"Business center{' at ' + where if where else ''} ({s.get('tenants')} businesses)"
+        else:  # name the main tenants so the caller knows who to ask for
             names = [n.strip() for n in (s.get("tenant_names") or "").split(",") if n.strip()]
             more = max(int(s.get("tenants") or 0) - 2, 0)
             r["display_name"] = (" / ".join(names[:2]) + (f" +{more} more" if more else "") + " (multi-tenant)"

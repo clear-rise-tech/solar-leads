@@ -103,7 +103,8 @@ def attach_buildings(sites: list[dict], place_indexes: dict) -> None:
                      bldg_name=b.get("name", ""), roof_m2=b.get("area_m2", 0))
             pidx = place_indexes.get(_cell(s["lat"], s["lon"], settings.tile_degrees))
             tenants = buildings.businesses_inside(b, pidx) if pidx else []
-            tenants.sort(key=lambda p: haversine_m(p["lat"], p["lon"], s["lat"], s["lon"]))  # nearest the panels first
+            # for the call list: real businesses before agents/practitioners, then nearest the panels
+            tenants.sort(key=lambda p: (_is_minor(p) or _is_weak(p), haversine_m(p["lat"], p["lon"], s["lat"], s["lon"])))
             s["tenants"] = len(tenants)
             s["tenant_names"] = ", ".join(dict.fromkeys(p["name"] for p in tenants))[:200]
             anchor, how = pick_anchor(b, tenants, pidx)
@@ -192,6 +193,11 @@ def pick_anchor(b: dict, tenants: list[dict], pidx) -> tuple[dict | None, str]:
     real = [p for p in tenants if not _is_minor(p)]
     real.sort(key=lambda p: (_is_weak(p), -(p.get("confidence") or 0), not p.get("phone"),
                              haversine_m(p["lat"], p["lon"], b["lat"], b["lon"])))
+    if real and _is_weak(real[0]) and pidx:  # only a practitioner/agent listing inside: a real business at the door wins
+        p = next((q for q in buildings.businesses_near(b, pidx, settings.outside_match_m)
+                  if not _is_minor(q) and not _is_weak(q)), None)
+        if p:
+            return p, "business next to building"
     if real:
         return real[0], "business inside building"
     if pidx:
@@ -212,8 +218,14 @@ _WEAK_RE = re.compile(r"^(dr\.?|doctor)\s|,?\s(do|md|dds|dmd|od|pa-c|lcsw|lpc|np
                       re.I)
 
 
+_WEAK_CATS = ("association", "real_estate", "insurance", "financial_advis", "consultant", "massage", "counsel",
+              "agent", "event_planning", "home_service", "freelance")
+
+
 def _is_weak(p: dict) -> bool:
-    return bool(_WEAK_RE.search(p.get("name", "") or "")) or "association" in (p.get("category") or "")
+    cat = (p.get("category") or "").lower()
+    return bool(_WEAK_RE.search(p.get("name", "") or "")) or any(c in cat for c in _WEAK_CATS) \
+        or bool(re.search(r"\b(realtor|agent|realty)\b", p.get("name", "") or "", re.I))
 
 
 _INSTITUTION_CATS = ("college", "university", "school", "hospital", "medical_center", "campus", "police",
@@ -223,14 +235,27 @@ _INSTITUTION_CATS = ("college", "university", "school", "hospital", "medical_cen
 def _institution_near(b: dict, pidx, bname: str, max_m: float = 400) -> dict | None:
     """Nearest school/college/hospital/government listing to a named campus building."""
     bw = _name_words(bname)
+    cands = []
     for p in buildings.businesses_near(b, pidx, max_m):
         cat = (p.get("category") or "").lower()
         if not any(c in cat for c in _INSTITUTION_CATS):
             continue
         if bw and bw <= _name_words(p["name"]):  # the building is already named after it
             return None
-        return p
-    return None
+        base = re.split(r"\s+[|:]\s+", p["name"])[0].strip()
+        if re.search(r"\b(building|hall|annex|wing|room)\b", base, re.I):  # a single building's listing
+            continue
+        cands.append((base, p))
+    if not cands:
+        return None
+    # the campus is the name most of the nearby listings share ("MCC-Maple Woods | Veterinary Technology", ...)
+    counts: dict[str, int] = {}
+    for base, _ in cands:
+        counts[base.upper()] = counts.get(base.upper(), 0) + 1
+    rank = lambda c: (-counts[c[0].upper()], not any(k in (c[1].get("category") or "") for k in ("college", "university")),
+                      not c[1].get("phone"))  # noqa: E731
+    base, p = min(cands, key=rank)
+    return dict(p, name=base)
 
 
 def looks_commercial(s: dict) -> bool:
