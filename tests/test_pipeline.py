@@ -330,7 +330,9 @@ def test_scorecard(fake_world, tmp_path):
     assert res["confirmed_sites"] == 4 and res["found"] == 2 and res["found_rate"] == 50.0
     assert len(res["never_seen"]) == 1 and len(res["excluded_by_tool"]) == 1  # the 'house' was hand-marked commercial
     assert res["owner_rate"] == 100.0 and res["name_rate"] == 100.0
-    assert res["clean"] == 2 and len(res["unknown_rows"]) == 2  # warehouse + strip are not in this small key
+    # the warehouse is inside the hand-checked outline but not in this small key; the strip mall sits
+    # outside the outline (a never-checked area), so it no longer counts against the clean rate
+    assert res["clean"] == 2 and len(res["unknown_rows"]) == 1
     md = scorecard.to_markdown(res)
     assert "Found rate" in md and "Missing Co" in md
 

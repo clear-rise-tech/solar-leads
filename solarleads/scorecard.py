@@ -54,9 +54,18 @@ def evaluate(rows: list[dict], key_path: str) -> dict:
     lats = [k["lat"] for k in key]
     lons = [k["lon"] for k in key]
     box = (min(lats) - 0.01, min(lons) - 0.01, max(lats) + 0.01, max(lons) + 0.01)
+    hull = _convex_hull([(k["lon"], k["lat"]) for k in key])
+    near_key = GridIndex(0.002)
+    for k in key:
+        near_key.add(k["lat"], k["lon"], k)
 
     def in_box(r):
-        return box[0] <= _num(r.get("lat")) <= box[2] and box[1] <= _num(r.get("lon")) <= box[3]
+        """In the area the answer key covers: inside the outline of the hand-checked sites (so rows from
+        neighbouring counties that were never hand-checked don't count against the clean rate)."""
+        lat, lon = _num(r.get("lat")), _num(r.get("lon"))
+        if not (box[0] <= lat <= box[2] and box[1] <= lon <= box[3]):
+            return False
+        return _in_hull(lon, lat, hull) or bool(near_key.near(lat, lon, MATCH_M))
 
     area_rows = [r for r in rows if in_box(r)]
     call = [r for r in area_rows if not str(r.get("tier", "X")).startswith("X")]
@@ -70,6 +79,7 @@ def evaluate(rows: list[dict], key_path: str) -> dict:
     confirmed = [k for k in key if k["status"].startswith("panels_confirmed")]
     found, excluded_by_tool, never_seen = [], [], []
     owner_checks = owner_ok = name_checks = name_ok = 0
+    name_misses = []
     matched_rows = set()
     for k in confirmed:
         hit = idx_call.near(k["lat"], k["lon"], MATCH_M)
@@ -82,7 +92,10 @@ def evaluate(rows: list[dict], key_path: str) -> dict:
                 owner_ok += names_agree(r["owner"], k["county_owner"])
             if k.get("site_name") and r.get("display_name"):
                 name_checks += 1
-                name_ok += names_agree(r["display_name"], k["site_name"])
+                if names_agree(r["display_name"], k["site_name"]):
+                    name_ok += 1
+                else:
+                    name_misses.append((k, r))
         elif idx_excl.near(k["lat"], k["lon"], MATCH_M):
             excluded_by_tool.append((k, idx_excl.near(k["lat"], k["lon"], MATCH_M)[0][1]))
         else:
@@ -121,7 +134,39 @@ def evaluate(rows: list[dict], key_path: str) -> dict:
         "owner_rate": pct(owner_ok, owner_checks),
         "name_checks": name_checks,
         "name_rate": pct(name_ok, name_checks),
+        "name_misses": name_misses,
     }
+
+
+def _convex_hull(pts):
+    pts = sorted(set(pts))
+    if len(pts) < 3:
+        return pts
+
+    def cross(o, a, b):
+        return (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0])
+
+    lower, upper = [], []
+    for p in pts:
+        while len(lower) >= 2 and cross(lower[-2], lower[-1], p) <= 0:
+            lower.pop()
+        lower.append(p)
+    for p in reversed(pts):
+        while len(upper) >= 2 and cross(upper[-2], upper[-1], p) <= 0:
+            upper.pop()
+        upper.append(p)
+    return lower[:-1] + upper[:-1]
+
+
+def _in_hull(x, y, hull) -> bool:
+    if len(hull) < 3:
+        return False
+    n = len(hull)
+    for i in range(n):
+        (x1, y1), (x2, y2) = hull[i], hull[(i + 1) % n]
+        if (x2 - x1) * (y - y1) - (y2 - y1) * (x - x1) < 0:
+            return False
+    return True
 
 
 def _map(lat, lon) -> str:
@@ -150,8 +195,18 @@ def to_markdown(res: dict, targets=(90.0, 95.0)) -> str:
         f"- Confirmed sites **not in the run at all** (map data gap): {len(res['never_seen'])}",
         f"- Call-list rows matching an *unclear* answer-key site: {res['unclear_rows']}",
         f"- Call-list rows **not in the answer key** (spot-check these): {len(res['unknown_rows'])}",
-        "",
     ]
+    if res["unknown_rows"]:
+        from collections import Counter
+
+        cats = Counter(r.get("category") or "?" for r in res["unknown_rows"])
+        lines.append("  - by kind: " + ", ".join(f"{k} {v}" for k, v in cats.most_common()))
+    lines.append("")
+    if res.get("name_misses"):
+        lines += ["### Business name differs from the hand check", "", "| Answer key | Tool's name | Map |", "|---|---|---|"]
+        for k, r in res["name_misses"][:20]:
+            lines.append(f"| {k['site_name']} | {r.get('display_name', '')} | {_map(k['lat'], k['lon'])} |")
+        lines.append("")
     if res["excluded_by_tool"]:
         lines += ["### Excluded by the tool but confirmed by hand", "", "| Answer key | Why excluded | Map |", "|---|---|---|"]
         for k, r in res["excluded_by_tool"][:30]:
@@ -163,9 +218,11 @@ def to_markdown(res: dict, targets=(90.0, 95.0)) -> str:
             lines.append(f"| {k['site_name'] or k['county_owner']} ({k['answer_id']}) | {k['arrays_mapped']} | {_map(k['lat'], k['lon'])} |")
         lines.append("")
     if res["unknown_rows"]:
-        lines += ["### On the call list but not in the answer key", "", "| Site | Tier | Map |", "|---|---|---|"]
-        for r in res["unknown_rows"][:30]:
-            lines.append(f"| {r.get('display_name', '')} | {r.get('tier', '')} | {_map(r['lat'], r['lon'])} |")
+        lines += ["### On the call list but not in the answer key", "",
+                  "| Site | Kind | Arrays | Panel area m² | Map |", "|---|---|---|---|---|"]
+        for r in res["unknown_rows"][:40]:
+            lines.append(f"| {r.get('display_name', '')} | {r.get('category', '')} | {r.get('arrays', '')} | "
+                         f"{round(_num(r.get('area_m2')))} | {_map(r['lat'], r['lon'])} |")
         lines.append("")
     return "\n".join(lines)
 
