@@ -235,23 +235,21 @@ _INSTITUTION_CATS = ("college", "university", "school", "hospital", "medical_cen
 def _institution_near(b: dict, pidx, bname: str, max_m: float = 400) -> dict | None:
     """Nearest school/college/hospital/government listing to a named campus building."""
     bw = _name_words(bname)
-    cands = []
+    cands, counts = [], {}
     for p in buildings.businesses_near(b, pidx, max_m):
-        cat = (p.get("category") or "").lower()
-        if not any(c in cat for c in _INSTITUTION_CATS):
-            continue
         if bw and bw <= _name_words(p["name"]):  # the building is already named after it
             return None
         base = re.split(r"\s+[|:]\s+", p["name"])[0].strip()
         if re.search(r"\b(building|hall|annex|wing|room)\b", base, re.I):  # a single building's listing
             continue
-        cands.append((base, p))
+        # campus departments are listed under the campus name with all kinds of categories
+        # ("MCC-Maple Woods | Veterinary Technology"), so count shared names across every nearby listing
+        counts[base.upper()] = counts.get(base.upper(), 0) + 1
+        cat = (p.get("category") or "").lower()
+        if any(c in cat for c in _INSTITUTION_CATS) or "|" in p["name"]:
+            cands.append((base, p))
     if not cands:
         return None
-    # the campus is the name most of the nearby listings share ("MCC-Maple Woods | Veterinary Technology", ...)
-    counts: dict[str, int] = {}
-    for base, _ in cands:
-        counts[base.upper()] = counts.get(base.upper(), 0) + 1
     rank = lambda c: (-counts[c[0].upper()], not any(k in (c[1].get("category") or "") for k in ("college", "university")),
                       not c[1].get("phone"))  # noqa: E731
     base, p = min(cands, key=rank)
