@@ -97,12 +97,16 @@ jobs:
           cache: pip
       - run: pip install -r requirements.txt
 
-      # The cache (one small database file) holds map-scan progress and every paid lookup,
-      # so runs resume where they stopped and never pay for the same site twice.
+      # The cache holds map-scan progress, every paid lookup, and the downloaded business and
+      # building data, so a run that stops (or hits the time limit) resumes where it left off
+      # and never pays for the same site twice.
       - name: Restore cache
         uses: actions/cache/restore@v4
         with:
-          path: data/solarleads.sqlite
+          path: |
+            data/solarleads.sqlite
+            data/places
+            data/buildings
           key: solarleads-${{ matrix.state }}-${{ github.run_id }}
           restore-keys: solarleads-${{ matrix.state }}-
 
@@ -118,7 +122,10 @@ jobs:
         if: always()
         uses: actions/cache/save@v4
         with:
-          path: data/solarleads.sqlite
+          path: |
+            data/solarleads.sqlite
+            data/places
+            data/buildings
           key: solarleads-${{ matrix.state }}-${{ github.run_id }}
 
       - uses: actions/upload-artifact@v4
